@@ -1,0 +1,35 @@
+{
+  "name": "bddoctor",
+  "version": "1.0.0",
+  "author": "chou0212@163.com",
+  "license": "ISC",
+  "dependencies": {
+    "mint-ui": "^2.0.5",
+    "normalize.css": "^5.0.0",
+    "vue": "^2.0.5",
+    "vue-resource": "^1.0.3",
+    "vue-router": "^2.0.1",
+    "vuex": "^2.0.0",
+    "vuex-router-sync": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.9.0",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-runtime": "^5.8.0",
+    "fis-parser-babel-5.x": "^1.4.0",
+    "fis-parser-less": "^0.1.3",
+    "fis-postprocessor-autoprefixer": "^0.0.5",
+    "fis3-hook-commonjs": "^0.1.25",
+    "fis3-hook-no-wrap": "^0.0.2",
+    "fis3-hook-node_modules": "2.2.3",
+    "fis3-packager-deps-pack": "^0.1.2",
+    "fis3-parser-vue-component": "^4.0.2",
+    "fis3-postpackager-loader": "^1.3.13",
+    "fis3-preprocessor-js-require-css": "^0.1.1",
+    "fis3-preprocessor-js-require-file": "^0.1.3",
+    "process": "^0.11.9",
+    "vue-hot-reload-api": "^1.3.3"
+  }
+}

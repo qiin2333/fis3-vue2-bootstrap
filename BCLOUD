@@ -1,0 +1,1 @@
+BUILD_SUBMITTER -u . -e FIS -m baidu/rpfore/console -c "cd baidu/rpfore/console &&  sh build.sh"

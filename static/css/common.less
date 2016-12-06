@@ -1,0 +1,97 @@
+@import "var.less";
+
+html {
+    -ms-overflow-style: scrollbar;
+    height: 100%;
+    font-size: 10px;
+}
+
+body {
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    font-size: 14px;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: @text-color;
+    background: @body-bg;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+ol,
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style: none;
+}
+
+.page-title {
+    font-size: 20px;
+    margin: 20px auto;
+    text-align: center;
+    line-height: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.mask {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.2s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+    opacity: 0;
+}
+
+.btn-transparent {
+    border: 1px solid #fff;
+    color: #fff;
+
+    &:hover {
+        color: #fff;
+    }
+}
+
+.main {
+    position: relative;
+    margin-top: 20px;
+}
+
+.bdd-container {
+    max-width: 1100px;
+    margin-left: 120px;
+    margin-right: 120px;
+}
+
+.dt,
+.dt-wrap {
+    display: table;
+}
+
+.dt-wrap .dtc {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
