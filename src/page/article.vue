@@ -76,10 +76,9 @@ export default {
         min-height: 20px;
     }
     .ad-item {
-        flex-grow: 1;
         position: relative;
         padding: 10px 15px;
-        height: 100%;
+        // height: 100%;
         background-color: #eee;
         border-bottom: solid 1px #eee;
         h3 {
