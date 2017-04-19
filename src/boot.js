@@ -5,8 +5,9 @@
 
 /* globals __inline, __uri */
 import Vue from 'vue';
+import VueCookie from 'vue-cookie';
 import VueResource from 'vue-resource';
-import 'normalize.css';
+import Vue2Filters from 'vue2-filters';
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import {sync} from 'vuex-router-sync';
@@ -15,19 +16,13 @@ import store from './store';
 import App from './app.vue';
 
 Vue.use(Mint);
+Vue.use(VueCookie);
 Vue.use(VueResource);
+Vue.use(Vue2Filters);
 
 // window.regeneratorRuntime = regeneratorRuntime;
 
 sync(store, router);
-
-
-new Vue({
-    el: '#app',
-    render: h => h(App),
-    router,
-    store
-});
 
 let indexScrollTop = 0;
 router.beforeEach((route, redirect, next) => {
@@ -46,4 +41,11 @@ router.afterEach(route => {
             document.body.scrollTop = indexScrollTop;
         });
     }
+});
+
+new Vue({
+    el: '#app',
+    render: h => h(App),
+    router,
+    store
 });

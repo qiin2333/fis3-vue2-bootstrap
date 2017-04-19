@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="app-demo">
     <router-link class="page-back" v-if="visible" :to="backUrl">
         <i class="mintui mintui-back"></i>
     </router-link>
@@ -26,55 +26,42 @@ export default {
 </script>
 
 <style lang="less">
+@import "/static/css/var.less";
+
 body,
 html {
     -webkit-overflow-scrolling: touch;
     user-select: none;
 }
-@font-face {
-    font-family: ecomicons;
-    src: url("//m.baidu.com/static/ecom/iphone_icons/iconfont_9a4732b.eot");
-    src: url("//m.baidu.com/static/ecom/iphone_icons/iconfont_9a4732b.eot#iefix") format("embedded-opentype"),url(//m.baidu.com/static/ecom/iphone_icons/iconfont_1fe9f7a.woff) format("woff"),url(//m.baidu.com/static/ecom/iphone_icons/iconfont_f0823fb.ttf) format("truetype"),url(//m.baidu.com/static/ecom/iphone_icons/iconfont_f0be303.svg?#iconfont) format("svg");
-}
 
-.ec_font:after {
-    font-family: ecomicons;
-    font-size: 16px;
-    display: inline-block;
-    color: #666;
-}
-.ec_font,
-.ec_font:after {
-    speak: none;
-    font-style: normal;
-    font-weight: 400;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-.ec_font_v3:after {
-    content: "\e757";
-}
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.page-back {
-    display: inline-block;
+.app-demo {
     position: absolute;
-    top: 12px;
-    left: 10px;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    i {
-        font-size: 24px;
-        line-height: 40px;
+    width: 100%;
+    height: 100%;
+    background-color: @bg-color;
+    overflow: auto;
+    .mint-header {
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        width: 100%;
+        background-color: @brand-primary;
     }
 }
+
+.no-cont-wrap {
+    width: 100%;
+    margin-top: 20%;
+    padding: 0 20px;
+    p {
+        text-align: center;
+        font-size: 2rem;
+    }
+}
+
+.subpage-wrapper {
+    margin-top: -1px;
+    overflow: auto;
+}
+
 </style>

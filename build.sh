@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MOD_NAME="bddoctor"
+MOD_NAME="fis3-vue2-bootstrap"
 TAR="$MOD_NAME.tar.gz"
 
 # add path
