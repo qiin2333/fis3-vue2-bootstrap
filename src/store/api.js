@@ -4,15 +4,24 @@
  */
 
 import Vue from 'vue';
-import moment from 'moment';
 import {API_ROOT} from 'config';
 
-function fetch(child) {
+function fetch(url, params = {}) {
+
+    Object.assign(params, {
+        credentials: true
+    });
+
     return new Promise((resolve, reject) => {
-        Vue.http.get(API_ROOT + child, {
-            credentials: true
+        Vue.http.get(`${API_ROOT}${url}`, {
+            params: params
         }).then(res => {
-            resolve(res.body.data);
+            let resObj = res.body;
+            if (resObj.hasOwnProperty('data') && resObj.code === 0) {
+                resolve(resObj.data);
+            } else {
+                reject(resObj.msg);
+            }
         }, reject);
     });
 }
