@@ -142,7 +142,17 @@ fis.match('*.vue', {
 }).match('{/api/**.js, /src/**.js, /config/**.js, /src/*.vue:js}', {
     parser: fis.plugin('babel-6.x', {
         presets: ['env', 'stage-3'],
-        plugins: ['transform-runtime', 'transform-remove-strict-mode', 'add-module-exports'],
+        plugins: [
+            'transform-runtime',
+            'transform-remove-strict-mode',
+            'add-module-exports',
+            ['component', [
+                {
+                    'libraryName': 'mint-ui',
+                    'style': true
+                }
+            ]]
+        ]
     }),
     rExt: '.js'
 });
