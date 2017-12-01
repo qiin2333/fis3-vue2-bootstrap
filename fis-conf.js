@@ -3,30 +3,61 @@
  * @author zhouqing02
  */
 
-function genDeployConf(receiver) {
-    return {
-        // console: true,
-        cache: true, // 是否开启上传列表缓存，开启后支持跳过未修改文件，默认：true
-        remoteDir: '/', // 远程文件目录，注意！！！设置错误将导致文件被覆盖
-        connect: receiver
-    };
+function buildTest(context) {
+    return context.match('/config/test.js', {
+        id: 'config',
+        isMod: true,
+        release: '/static/$0'
+    })
+    .match('**.{vue,js,css}', {
+        useHash: true
+    });
 }
+
+function buildProd(context) {
+    return context.match('/config/production.js', {
+        id: 'config',
+        isMod: true,
+        release: '/static/$0'
+    })
+    .match('**.png', {
+        optimizer: fis.plugin('png-compressor')
+    })
+    .match('*.{js,vue}', {
+        optimizer: fis.plugin('uglify-js', {
+            compress: {
+                drop_console: true
+            }
+        })
+    })
+    .match('**.min.{js,css}', {
+        optimizer: null
+    })
+    .match('*.css', {
+        optimizer: fis.plugin('clean-css')
+    })
+    .match('::image', {
+        useHash: true
+    })
+    .match('**.{vue,js,css}', {
+        useHash: true
+    });
+}
+
+fis.set('project.md5Connector ', '.');
 
 // 禁用fis3默认的fis-hook-src
 fis.unhook('components');
 fis.hook('node_modules');
 
-fis.set('project.md5Connector ', '.');
-
 // 添加commonjs支持 (需要先安装fis3-hook-commonjs)
 fis.hook('commonjs', {
     baseUrl: './',
     paths: {
-        component: 'src/component',
-        page: 'src/page',
+        component: '/src/component',
+        page: '/src/page',
         // vue: 'node_modules/vue/dist/vue.min.js', // 默认引用的vue.common.js不包含template编译
-        'vue-resource': '/dep/vue-resource.min.js',
-        'mint-ui': '/dep/mint-ui/index.js',
+        'vue-resource': '/node_modules/vue-resource/dist/vue-resource.min.js',
         echarts: '/dep/echarts.min.js' // 定制版echarts
     },
     extList: ['.js', '.jsx', '.es']
@@ -108,10 +139,10 @@ fis.match('*.vue', {
     parser: fis.plugin('less'),
     postprocessor: fis.plugin('autoprefixer'),
     rExt: '.css'
-}).match('{api/**.js, store/**.js, src/**.js, config/**.js, *.vue:js}', {
+}).match('{/api/**.js, /src/**.js, /config/**.js, /src/*.vue:js}', {
     parser: fis.plugin('babel-6.x', {
-        presets: ['es2015', 'stage-3'],
-        plugins: ['add-module-exports']
+        presets: ['env', 'stage-3'],
+        plugins: ['transform-runtime', 'transform-remove-strict-mode', 'add-module-exports'],
     }),
     rExt: '.js'
 });
@@ -133,12 +164,6 @@ fis.match('::packager', {
             '/src/boot.js',
             '/src/boot.js:deps'
         ],
-        '/static/pkg/video.js': [
-            '/node_modules/vue-video-player/**.js',
-            '/node_modules/vue-video-player/**.js:deps',
-            '/node_modules/video.js/**.js',
-            '/node_modules/video.js/**.js:deps',
-        ],
         '/static/pkg/app.css': [
             '/src/**.{js,vue}:deps',
             '/static/**.{css,less}',
@@ -155,95 +180,40 @@ fis.match('::packager', {
     })
 });
 
-fis.media('test')
-    .match('/config/test.js', {
-        id: 'config',
-        isMod: true,
-        release: '/static/$0'
-    })
+buildProd(fis.media('test'))
     .match('*', {
-        domain: '/gamelive',
-        deploy: fis.plugin('ftp', genDeployConf({
-            host: 'http://xxx/demo',
-            port: '21',
-            user: '',
-            password: ''
-        }))
+        deploy: fis.plugin('sftp-client', {
+            from: ['/'],
+            to: ['/home/deploy/data/app'],
+            host: '123',
+            port: '22',
+            username: '123',
+            password: '123',
+            cache: false
+        })
     });
 
 // 生产环境下CSS、JS压缩合并
 // 使用方法 fis3 release prod
 /* eslint-disable fecs-camelcase */
-fis.media('prod')
-    .match('/config/production.js', {
-        id: 'config',
-        isMod: true,
-        release: '/static/$0'
-    })
-    .match('**.png', {
-        optimizer: fis.plugin('png-compressor')
-    })
-    .match('*.{js,vue}', {
-        optimizer: fis.plugin('uglify-js', {
-            compress: {
-                drop_console: true
-            }
-        })
-    })
-    .match('dep/**.min.{js,css}', {
-        optimizer: null
-    })
-    .match('*.css', {
-        optimizer: fis.plugin('clean-css')
-    })
-    .match('::image', {
-        useHash: true
-    })
-    .match('**.{vue,js,css}', {
-        useHash: true
-    })
+
+buildProd(fis.media('prod'))
     .match('*', {
-        domain: '/gamelive',
-        deploy: fis.plugin('ftp', genDeployConf({
-            host: '117.27.142.75',
-            port: '21',
-            user: 'gamelive',
-            password: 'gamehtml5'
-        }))
+        deploy: fis.plugin('sftp-client', {
+            from: ['/'],
+            to: ['/data/app'],
+            host: '123',
+            port: '40589',
+            username: '123',
+            password: '123',
+            cache: false
+        })
     });
 
-fis.media('local')
-    .match('/config/production.js', {
-        id: 'config',
-        isMod: true,
-        release: '/static/$0'
-    })
-    .match('**.png', {
-        optimizer: fis.plugin('png-compressor')
-    })
-    .match('*.{js,vue}', {
-        optimizer: fis.plugin('uglify-js', {
-            compress: {
-                drop_console: true
-            }
-        })
-    })
-    .match('dep/**.min.{js,css}', {
-        optimizer: null
-    })
-    .match('*.css', {
-        optimizer: fis.plugin('clean-css')
-    })
-    .match('::image', {
-        useHash: true
-    })
-    .match('**.{vue,js,css}', {
-        useHash: true
-    })
+buildTest(fis.media('local'))
     .match('*', {
-        domain: '/demo',
         deploy: fis.plugin('local-deliver', {
-            to: './output'
+            to: '../dist'
         })
     })
 /* eslint-enable fecs-camelcase */
