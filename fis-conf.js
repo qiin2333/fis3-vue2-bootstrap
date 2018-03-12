@@ -41,6 +41,35 @@ function buildProd(context) {
     })
     .match('**.{vue,js,css}', {
         useHash: true
+    })
+    .match('::packager', {
+        packager: fis.plugin('deps-pack', {
+            '/static/pkg/app.bundle.js': [
+                '/dep/mod.js',
+                '/src/boot.js',
+                '/src/boot.js:deps'
+            ],
+            '/static/pkg/app.css': [
+                '/src/**.{js,vue}:deps',
+                '/static/**.{css,less}',
+                '/static/**.{css,less}:deps'
+            ]
+        }),
+        postpackager: [
+            fis.plugin('loader', {
+                resourceType: 'mod',
+                useInlineMap: true,
+                resourcemapWhitespace: 4,
+                allInOne: {
+                    js: function(file) {
+                        return "/build/pkg/" + file.subpathNoExt.match(/\/src\/page(\/.*)?/)[1] + ".aio.js";
+                    },
+                    css: function(file) {
+                        return "/build/pkg/" + file.subpathNoExt.match(/\/src\/page(\/.*)?/)[1] + ".aio.css";
+                    }
+                }
+            })
+        ]
     });
 }
 
@@ -90,10 +119,6 @@ fis.match('/dep/**', {
     isMod: true,
     useMap: true,
     release: '/static/$0'
-});
-
-fis.match('/dep/RongIMLib.js', {
-    isMod: false
 });
 
 fis.match('/config/development.js', {
@@ -168,18 +193,6 @@ fis.match('*.{js,vue,jsx,ts,tsx,es}', {
 });
 
 fis.match('::packager', {
-    packager: fis.plugin('deps-pack', {
-        '/static/pkg/app.bundle.js': [
-            '/dep/mod.js',
-            '/src/boot.js',
-            '/src/boot.js:deps'
-        ],
-        '/static/pkg/app.css': [
-            '/src/**.{js,vue}:deps',
-            '/static/**.{css,less}',
-            '/static/**.{css,less}:deps'
-        ]
-    }),
     postpackager: fis.plugin('loader', {
         resourceType: 'mod',
         useInlineMap: true
